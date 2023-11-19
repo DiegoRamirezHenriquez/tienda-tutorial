@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@600&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family:'Comfortaa', sans-serif;
+}
+h1, h2, h3, h4, h5, h6, p, a, input, textarea{
+  margin: 0;
+  padding: 0;
+}
+ul{
+  list-style-type: none;
+}
+a{
+  text-decoration: none;
+}
+.activo{
+  background-color: white;
+  color: blueviolet;
+  width: 100%;
+}
