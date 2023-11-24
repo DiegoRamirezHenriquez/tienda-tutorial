@@ -5,8 +5,10 @@ import 'boxicons'
 import Productos from './components/Productos'
 import catalogo from './data/Catalogo'
 import Carrito from './components/Carrito'
+import HeaderCarrito from './components/HeaderCarrito';
 
 function App() {
+  //filtro
   const [botonActivo, setBotonActivo] = useState('todos');
   const [filtro, setFiltro] = useState('todos');
 
@@ -15,10 +17,36 @@ function App() {
     setBotonActivo(tipo);
   };
 
-
   const productosFiltrados = catalogo
     .filter((c) => (filtro === 'todos' ? true : c.tipo === filtro))
-    .map((c) => <Productos key={c.id} imagen={c.imagen} nombre={c.nombre} precio={c.precio} />);
+    .map((c) => (
+      <Productos
+        id={c.id}
+        imagen={c.imagen}
+        nombre={c.nombre}
+        precio={c.precio}
+        onAgregar={() => agregarProducto({ id: c.id, nombre: c.nombre, precio: c.precio, imagen: c.imagen , cantidad: 1})}
+      />));
+
+    //carrito
+    const [productosAgregados, setProductosAgregados] = useState([]);
+    
+    
+  const agregarProducto = (producto) => {
+      const prdct=productosAgregados.some(function(item) {    
+        return item.id===producto.id;
+      })
+    if(prdct){
+      for(let i=0;i<productosAgregados.length;i++){
+        if(producto.id==productosAgregados[i].id){
+          productosAgregados[i].cantidad=productosAgregados[i].cantidad+1;
+        }
+      }
+    }else{
+      producto.cantidad=1;
+      setProductosAgregados([...productosAgregados, producto]);
+    }
+  };
 
 
   return (
@@ -28,7 +56,7 @@ function App() {
           <header>
             <h1 className=' font-bold text-3xl text-white'>ReactTShop</h1>
           </header>
-          <nav>
+          {botonActivo === 'carrito'? <HeaderCarrito botonActivo={botonActivo} setBotonActivo={setBotonActivo} setFiltro={setFiltro}/>:<nav>
               <ul>
                 <li>
                   <button className={`flex justify-start ${botonActivo === 'todos' ? 'activo' : 'text-white'} p-4 rounded-l-lg text-xl`}  onClick={() => handleFiltroClick('todos')}><box-icon name='right-arrow' type='solid' color='#7c3aed' ></box-icon>Todos los productos</button>
@@ -44,17 +72,20 @@ function App() {
                 </li>
               </ul>
           </nav>
+          }
+          
           <footer>
             <p className='text-slate-50'>© Diego Ramirez</p>
           </footer>
         </aside>
         <main className='flex flex-col flex-wrap bg-white m-8 rounded-xl ml-0 w-4/5'>
-          {botonActivo === 'carrito'? <Carrito/>:<>
+          {botonActivo === 'carrito'? <Carrito carro={productosAgregados}/>:<>
             <h1 className=' p-10 font-extrabold text-2xl text-violet-600'>Todos los productos</h1>
             <div className='flex flex-row flex-wrap m-2 justify-around gap-4 '>
-              {productosFiltrados}
+            {productosFiltrados}
             </div>
           </>}
+          
         </main>
       </div>
     </>
