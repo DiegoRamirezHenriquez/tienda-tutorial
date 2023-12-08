@@ -1,11 +1,11 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
+import 'boxicons';
 
-function ProductosCarrito({ precio, imagen, cantidad, nombre, menosCantidad,masCantidad}) {
+function ProductosCarrito({ precio, imagen, cantidad, nombre, menosCantidad,masCantidad, eliminar}) {
   const numericPrice = parseFloat(precio);
   const formattedPrice = numericPrice.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
   
-  // const [cant, setCant]=useState(can);
   const [canti, setCanti] = useState(cantidad);
   
   let total=canti*numericPrice
@@ -29,7 +29,7 @@ function ProductosCarrito({ precio, imagen, cantidad, nombre, menosCantidad,masC
         <div>
           <span>Cantidad</span>
           <div className='flex flex-row justify-between '>
-            {canti > 1 ? (<button className=' font-extrabold text-xl' onClick={menosCantidad}>-</button>):(<button className=' font-extrabold text-xl' ></button>)}
+            {canti > 1 ? (<button className=' font-extrabold text-xl' onClick={menosCantidad}>-</button>):(<button className=' font-extrabold text-xl' onClick={eliminar} ><box-icon name='trash' type='solid' color='#7c3aed' ></box-icon></button>)}
             <p className='font-bold text-xl '>{canti}</p>
             <button className=' font-extrabold text-xl' onClick={masCantidad}>+</button>
           </div>

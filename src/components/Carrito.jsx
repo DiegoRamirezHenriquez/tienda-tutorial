@@ -38,14 +38,21 @@ function Carrito({carro, setProductosAgregados, setNumeroCarrito}) {
     );
     setProductosAgregados(nuevosDatos);
   }
-  
+
+  const handleEliminarProducto = (id) => {
+    const nuevoCarro = carro.filter(producto => producto.id !== id);
+    setProductosAgregados(nuevoCarro);
+    
+    const nuevoNumeroCarrito = nuevoCarro.reduce((acc, producto) => acc + producto.cantidad, 0);
+    setNumeroCarrito(nuevoNumeroCarrito);
+  };
 
   return (
     <>
       <h1 className='p-10 font-extrabold text-2xl text-violet-600'>Carrito</h1>
       <div className='flex flex-col flex-wrap m-2 justify-around gap-4'>
       {carro.length==0 ?<> <p className='text-violet-600 text-xl font-bold pl-10'>Carro vacío</p> </>: <>{carro.map((c) => (
-        <ProductosCarrito  id={c.id} imagen={c.imagen} nombre={c.nombre} precio={c.precio} cantidad={c.cantidad} setNumeroCarrito={setNumeroCarrito} carro={carro} setPrecioCLP={setPrecioCLP} menosCantidad={()=>handleMenosCantidad(c.id)} masCantidad={()=>handleMasCantidad(c.id)}/> 
+        <ProductosCarrito  id={c.id} imagen={c.imagen} nombre={c.nombre} precio={c.precio} cantidad={c.cantidad} setNumeroCarrito={setNumeroCarrito} carro={carro} setPrecioCLP={setPrecioCLP} menosCantidad={()=>handleMenosCantidad(c.id)} masCantidad={()=>handleMasCantidad(c.id)} eliminar={()=>handleEliminarProducto(c.id)}/> 
       ))}
         <div className='flex flex-row justify-between ml-3 mr-3'>
           <button className='border rounded-lg bg-white  transition-colors hover:bg-slate-200 text-violet-700 font-extrabold p-2 text-xl ' onClick={vaciar} >Vaciar carro</button>
